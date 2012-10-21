@@ -21,7 +21,10 @@ my $calibreLibrary = $ARGV{-c};
 unless ( defined($destination) || defined($calibreLibrary) )
 { croak "Need both -c and -d defined for use.  Try with --man to see options"; }
 
-#TODO add test for directories existing
+#test for directories existing
+unless ( -d $destination && -d $calibreLibrary )
+{ croak "defined directories don't exist/readable\n"; }
+
 
 # lookup all the files below $calibreLibrary
 my @files = File::Find::Rule->file
@@ -34,12 +37,13 @@ foreach $cover (@files)
 {
 	my ($name,$path,$suffix) = fileparse($cover);
 	#my @dirs = File::Spec->splitdir( $path);
-	$path =~ m/^.*\/(.*)\ \(.*\/$/x;
+	$path =~ m/^.*\/(.*)\ \(.*\/$/x; #grab the last directory and exclude calibre's (245)
 	#say $cover;
-	say $1;
+	my $coverFileName = $1;
+	$coverFileName =~ s/\W*//g; #strip out non 'word' chars
+	say $coverFileName;
 }
 
-#TODO strip out whitespace and commas etc
 
 __END__
 =head1 NAME
