@@ -8,7 +8,7 @@ use Carp;
 use File::Basename;
 use File::Spec;
 use File::Find::Rule;
-
+use File::Copy;
 
 #set the version number in a way Getopt::Euclid can parse
 BEGIN { use version; our $VERSION = qv('0.1.1_1') }
@@ -36,12 +36,13 @@ my $cover;
 foreach $cover (@files)
 {
 	my ($name,$path,$suffix) = fileparse($cover);
-	#my @dirs = File::Spec->splitdir( $path);
 	$path =~ m/^.*\/(.*)\ \(.*\/$/x; #grab the last directory and exclude calibre's (245)
-	#say $cover;
 	my $coverFileName = $1;
 	$coverFileName =~ s/\W*//g; #strip out non 'word' chars
-	say $coverFileName;
+	my $destinationFile = $destination . $coverFileName . ".jpg";
+	say "Copying $cover  to $destinationFile";
+
+	copy($cover,$destinationFile) or die "Copy failed: $!";
 }
 
 
