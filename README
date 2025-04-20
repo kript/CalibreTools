@@ -1,7 +1,0 @@
-Assorted tools for working with Calibre, the eBook management software.
-At the moment, this consits only of;
-
-Calibre-CoverArt-Collation.pl  
------------------------------
-A script to create a directory of cover art files, one for each book 
-in the library, for use in screensavers and such.
